@@ -1,0 +1,17 @@
+{
+  "name": "express-integ",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "keywords": [],
+  "author": "Rahul T",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.6.1",
+    "dotenv": "^16.3.1",
+    "typescript": "^5.2.2"
+  }
+}
