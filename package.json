@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.9.7",
+    "@types/lodash.clonedeep": "^4.5.7",
+    "@types/lodash.get": "^4.4.7",
+    "@types/lodash.set": "^4.3.7",
+    "eslint": "^7.32.0",
+    "eslint-config-custom": "*",
+    "prettier": "^2.5.1",
+    "turbo": "^1.9.7"
+  },
+  "name": "toolhero-mono",
+  "packageManager": "npm@8.19.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "@changesets/cli": "^2.26.1",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "zod": "^3.21.4"
+  },
+  "version": "0.0.1"
+}

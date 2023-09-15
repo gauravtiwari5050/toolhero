@@ -1,0 +1,54 @@
+{
+  "version": "0.0.9",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "toolhero",
+  "author": "Gaurav Tiwari",
+  "module": "dist/toolhero.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/toolhero.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/toolhero.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.7",
+    "@types/route-parser": "^0.1.4",
+    "next": "^13.4.4"
+  },
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
+    "route-parser": "^0.0.5"
+  }
+}
