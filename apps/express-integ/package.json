@@ -6,6 +6,9 @@
   "scripts": {
     "build": "npx tsc"
   },
+  "dependencies": {
+    "toolhero": "*"
+  },
   "keywords": [],
   "author": "Rahul T",
   "license": "ISC",
