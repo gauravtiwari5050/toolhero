@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
+import { SimpleHeroManager } from "toolhero";
 import { HeroButton } from "toolhero/src/main/valueObjects/HeroButton";
 import { HeroLink } from "toolhero/src/main/valueObjects/HeroLink";
 import { HeroOutput } from "toolhero/src/main/valueObjects/HeroOutput";
@@ -7,16 +8,29 @@ import { HeroTable } from "toolhero/src/main/valueObjects/HeroTable";
 import { HeroTableRow } from "toolhero/src/main/valueObjects/HeroTableRow";
 import { HeroText } from "toolhero/src/main/valueObjects/HeroText";
 import { HeroTool } from "toolhero/src/main/valueObjects/HeroTool";
-import { HeroManager } from "toolhero/src/toolhero/HeroManager";
+import { HeroApplication } from "toolhero/src/toolhero/HeroApplication";
+import {
+  IHeroContext,
+  IHeroManager,
+} from "toolhero/src/toolhero/management/IHeroManager";
 
 dotenv.config();
 
 const app = express();
 const port = 5050;
 
-const manager = new HeroManager({ key: "abracadabra" });
+export class CustomHeroManager implements IHeroManager {
+  async afterSignIn(args: { context: IHeroContext }): Promise<boolean> {
+    return true;
+  }
+}
+
+const heroApp = new HeroApplication({
+  secret: "abracadabra",
+  manager: new CustomHeroManager(),
+});
 const tool = HeroTool.New("My First Tool");
-manager.add(tool);
+heroApp.add(tool);
 
 tool.input.add(
   HeroText.New("page").default(async () => {
@@ -51,7 +65,7 @@ tool.run(async (payload, context) => {
   return output;
 });
 
-app.use(manager.expressHandler());
+app.use(heroApp.expressHandler());
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

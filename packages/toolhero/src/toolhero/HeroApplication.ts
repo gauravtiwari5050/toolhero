@@ -6,20 +6,24 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ToolRenderService } from '../main/services/ToolRenderService';
 import { HeroTool } from '../main/valueObjects/HeroTool';
-import { HeroSimpleAuth, IHeroAuth } from './auth/IHeroAuth';
+import {
+  IHeroManager,
+  IHeroUser,
+  EnumUserRole,
+} from './management/IHeroManager';
 
 export type NextApiHandler = (
   req: NextApiRequest,
   res: NextApiResponse
 ) => Promise<void>;
 
-export class HeroManager {
+export class HeroApplication {
   private key: string;
   private tools: HeroTool[];
-  private auth?: IHeroAuth;
-  constructor(args: { key: string; auth?: IHeroAuth }) {
-    this.key = args.key;
-    this.auth = args.auth;
+  private manager?: IHeroManager;
+  constructor(args: { secret: string; manager?: IHeroManager }) {
+    this.key = args.secret;
+    this.manager = args.manager;
     this.tools = [];
   }
   public add(tool: HeroTool): void {
@@ -28,19 +32,6 @@ export class HeroManager {
 
   public getTools(): HeroTool[] {
     return this.tools;
-  }
-
-  public enableStaticAuth(args: {
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
-  }) {
-    this.auth = new HeroSimpleAuth({ ...args, manager: this });
-  }
-
-  public enableAuth(auth: IHeroAuth) {
-    this.auth = auth;
   }
 
   public expressHandler(): ExpressRouter {

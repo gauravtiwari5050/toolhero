@@ -6,11 +6,10 @@ import { HeroOutput } from './main/valueObjects/HeroOutput';
 import { HeroTable } from './main/valueObjects/HeroTable';
 import { HeroTableRow } from './main/valueObjects/HeroTableRow';
 import { HeroLink } from './main/valueObjects/HeroLink';
-import { HeroManager } from './toolhero/HeroManager';
-
+import { HeroApplication } from './toolhero/HeroApplication';
 export {
   HeroNextManager,
-  HeroManager,
+  HeroApplication,
   HeroTool,
   HeroText,
   HeroButton,
