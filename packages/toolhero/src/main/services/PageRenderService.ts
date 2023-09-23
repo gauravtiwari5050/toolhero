@@ -14,11 +14,11 @@ export class PageRenderService {
     this.windowVars = windowVars;
   }
   public async render(): Promise<string> {
-    let windowScript = ``;
+    let windowScript = `\nwindow.APP = "${this.page}";`;
     for (const variable in this.windowVars) {
       windowScript += `\nwindow.${variable}=${JSON.stringify(
         this.windowVars[variable]
-      )}\n`;
+      )};\n`;
     }
     const html = `
             <!DOCTYPE html>
@@ -30,7 +30,7 @@ export class PageRenderService {
                 <title>Vite + React + TS</title>
                 <style>${Buffer.from(
                   // @ts-ignore
-                  assets[this.page].css,
+                  assets.main.css,
                   'base64'
                 ).toString()}</style>
             </head>
@@ -39,7 +39,7 @@ export class PageRenderService {
                 <script>${windowScript}</script>
                 <script>${Buffer.from(
                   // @ts-ignore
-                  assets[this.page].javascript,
+                  assets.main.javascript,
                   'base64'
                 ).toString()}</script>
             </body>

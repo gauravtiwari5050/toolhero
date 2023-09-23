@@ -9,7 +9,7 @@ const writeFileAsync = promisify(writeFile);
 const assetsRoot = path.resolve(__dirname, "../../apps/frontend/dist/assets/");
 const outputFile = path.resolve(__dirname, "../toolhero/src/assets/assets.ts");
 const buildHtmlPages = async () => {
-  const pages = ["tool", "login"];
+  const pages = ["main"];
   const assets: any = {};
   for (const page of pages) {
     assets[page] = await buildHtmlPage(page);

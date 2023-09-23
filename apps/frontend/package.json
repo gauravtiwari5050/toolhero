@@ -5,16 +5,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build-watch": "tsc && (vite build -c login.vite.config.ts --watch & vite build -c tool.vite.config.ts --watch)",
+    "build-watch": "tsc && vite build -c vite.config.ts --watch",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "@tailwindcss/forms": "^0.5.6",
     "axios": "^1.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "vite-plugin-svgr": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

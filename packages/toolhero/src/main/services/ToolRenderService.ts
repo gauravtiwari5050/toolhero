@@ -17,7 +17,7 @@ export class ToolRenderService {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Vite + React + TS</title>
                 <style>${Buffer.from(
-                  assets.tool.css,
+                  assets.main.css,
                   'base64'
                 ).toString()}</style>
             </head>
@@ -25,7 +25,7 @@ export class ToolRenderService {
                 <div id="root"></div>
                 <script>window.TOOL=${JSON.stringify(toolSerialized)}</script>
                 <script>${Buffer.from(
-                  assets.tool.javascript,
+                  assets.main.javascript,
                   'base64'
                 ).toString()}</script>
             </body>

@@ -15,28 +15,36 @@ export class ExpressHeroResponse extends IHeroResponse {
     return this.terminated;
   }
   send(obj: any): void {
+    // @ts-ignore
     this.rawResponse.send(obj);
   }
   json(obj: any): void {
+    // @ts-ignore
     this.rawResponse.status(200);
     this.send(obj);
   }
   getHost(): string {
+    // @ts-ignore
     return this.rawResponse.req.hostname;
   }
   getUrl(): string {
+    // @ts-ignore
     return this.rawResponse.req.originalUrl;
   }
   getHeader(name: string): string | string[] | undefined {
+    // @ts-ignore
     return this.rawResponse.req.headers[name];
   }
   setHeader(name: string, value: string | number | string[]): void {
+    // @ts-ignore
     this.rawResponse.setHeader(name, value);
   }
   status(code: number): void {
+    // @ts-ignore
     this.rawResponse.status(code);
   }
   redirect(url: string): void {
+    // @ts-ignore
     this.rawResponse.redirect(url, 302);
   }
 }

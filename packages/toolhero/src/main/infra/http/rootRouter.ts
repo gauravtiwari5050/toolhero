@@ -18,8 +18,18 @@ rootRouter.GET('/', async (req, res) => {
 });
 
 rootRouter.GET('/login', async (req, res) => {
-  const pageRenderService = new PageRenderService({
+  res.internalRedirect('/welcome/admin/setup');
+
+  /*const pageRenderService = new PageRenderService({
     page: 'login',
+    windowVars: {},
+  });
+  res.okHtml(await pageRenderService.render());*/
+});
+
+rootRouter.GET('/welcome/admin/setup', async (req, res) => {
+  const pageRenderService = new PageRenderService({
+    page: 'adminSetup',
     windowVars: {},
   });
   res.okHtml(await pageRenderService.render());

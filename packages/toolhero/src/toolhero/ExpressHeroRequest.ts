@@ -15,21 +15,27 @@ export class ExpressHeroRequest implements IHeroRequest {
     this._heroParams = params;
   }
   params(): Record<string, unknown> {
+    // @ts-ignore
     return this.rawRequest.params;
   }
   query(): Record<string, unknown> {
+    // @ts-ignore
     return this.rawRequest.query;
   }
   cookies(): Record<string, string> {
+    // @ts-ignore
     return this.rawRequest.cookies;
   }
   url(): string {
+    // @ts-ignore
     return this.rawRequest.url;
   }
   method(): string {
+    // @ts-ignore
     return this.rawRequest.method;
   }
   body(): unknown {
+    // @ts-ignore
     return this.rawRequest.body;
   }
 }
