@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
-import { SimpleHeroManager } from "toolhero";
 import { HeroButton } from "toolhero/src/main/valueObjects/HeroButton";
 import { HeroLink } from "toolhero/src/main/valueObjects/HeroLink";
 import { HeroOutput } from "toolhero/src/main/valueObjects/HeroOutput";
@@ -65,7 +64,7 @@ tool.run(async (payload, context) => {
   return output;
 });
 
-app.use(heroApp.expressHandler());
+app.use("/mount", heroApp.expressHandler());
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

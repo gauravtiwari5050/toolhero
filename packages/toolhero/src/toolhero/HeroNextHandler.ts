@@ -1,15 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { HeroTool } from '../main/valueObjects/HeroTool';
-import { HeroRequest } from './HeroRequest';
-import { HeroResponse } from './HeroResponse';
+import { ExpressHeroRequest } from './ExpressHeroRequest';
+import { ExpressHeroResponse } from './ExpressHeroResponse';
 import { Router } from './routes/Router';
 import { ErrorCodes } from '../shared/domain/ErrorCodes';
-import RouteParser from "route-parser"
+import RouteParser from 'route-parser';
 import { rootRouter } from '../main/infra/http/rootRouter';
 
-
-
-export type NextApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+export type NextApiHandler = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => Promise<void>;
 
 export class HeroNextManager {
   private tools: HeroTool[];
@@ -67,42 +68,41 @@ export class HeroNextManager {
     console.log(json);
     res.json(json)
   }*/
-  public nextApiHandler(_inputHandler?: NextApiHandler) {
+  /*public nextApiHandler(_inputHandler?: NextApiHandler) {
     const self = this;
     async function Handler(
       vercelRequest: NextApiRequest,
       vercelResponse: NextApiResponse
     ) {
-
-
       // build request and response objects for routing
-      const req = new HeroRequest(vercelRequest);
-      const res = new HeroResponse(vercelResponse);
+      const req = new ExpressHeroRequest(vercelRequest);
+      const res = new ExpressHeroResponse(vercelResponse);
 
       // initialize router
       const router = new Router();
 
       // mount root  and use root routes
-      router.use("/", rootRouter);
+      router.use('/', rootRouter);
       const routes = router.routes();
 
       // clean incoming url and ready it for processing
-      let effectiveUrl = (req.query['r'] as string || "")
-        .replace(/\/\/+/g, "/")
-        .replace(/\/$/, "");
-      if (effectiveUrl === "") {
-        effectiveUrl = "/"
+      let effectiveUrl = ((req.query['r'] as string) || '')
+        .replace(/\/\/+/g, '/')
+        .replace(/\/$/, '');
+      if (effectiveUrl === '') {
+        effectiveUrl = '/';
       }
 
       console.log({ effectiveUrl });
 
-
       // iterate over list of mounted routes
       for (const route of routes) {
         // get the cleaned path for the route
-        let effectivePath = route.path.replace(/\/\/+/g, "/").replace(/\/$/, "");
-        if (effectivePath === "") {
-          effectivePath = "/";
+        let effectivePath = route.path
+          .replace(/\/\/+/g, '/')
+          .replace(/\/$/, '');
+        if (effectivePath === '') {
+          effectivePath = '/';
         }
 
         // load parser
@@ -115,19 +115,19 @@ export class HeroNextManager {
           try {
             const middlewares = route.middlewares;
             for (const middleware of middlewares) {
-              await middleware(req, res, { manager: self });
+              await middleware(req, res, { application: self });
               if (res.terminated === true) {
                 return;
               }
             }
-            await route.handler(req, res, { manager: self });
+            await route.handler(req, res, { application: self });
             return;
           } catch (err) {
             console.error(err);
             return res.error({
               code: ErrorCodes.INTERNAL_SERVER_ERROR,
               status: 500,
-              message: "Something went wrong",
+              message: 'Something went wrong',
             });
           }
         }
@@ -135,11 +135,10 @@ export class HeroNextManager {
       // if none of the routes match, return a 404 response
       res.error({
         code: ErrorCodes.ROUTE_NOT_FOUND,
-        message: "Could not find this route",
+        message: 'Could not find this route',
         status: 404,
       });
     }
-    return Handler
-  }
+    return Handler;
+  }*/
 }
-

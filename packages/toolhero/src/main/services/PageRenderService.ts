@@ -1,13 +1,25 @@
 import { assets } from '../../assets/assets';
-import { HeroTool } from '../valueObjects/HeroTool';
 
-export class ToolRenderService {
-  private tool: HeroTool;
-  constructor(tool: HeroTool) {
-    this.tool = tool;
+export class PageRenderService {
+  private page: string;
+  private windowVars: Record<string, any>;
+  constructor({
+    page,
+    windowVars,
+  }: {
+    page: string;
+    windowVars: Record<string, any>;
+  }) {
+    this.page = page;
+    this.windowVars = windowVars;
   }
   public async render(): Promise<string> {
-    const toolSerialized = await this.tool.serialise();
+    let windowScript = ``;
+    for (const variable in this.windowVars) {
+      windowScript += `\nwindow.${variable}=${JSON.stringify(
+        this.windowVars[variable]
+      )}\n`;
+    }
     const html = `
             <!DOCTYPE html>
             <html lang="en">
@@ -17,15 +29,17 @@ export class ToolRenderService {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Vite + React + TS</title>
                 <style>${Buffer.from(
-                  assets.tool.css,
+                  // @ts-ignore
+                  assets[this.page].css,
                   'base64'
                 ).toString()}</style>
             </head>
             <body>
                 <div id="root"></div>
-                <script>window.TOOL=${JSON.stringify(toolSerialized)}</script>
+                <script>${windowScript}</script>
                 <script>${Buffer.from(
-                  assets.tool.javascript,
+                  // @ts-ignore
+                  assets[this.page].javascript,
                   'base64'
                 ).toString()}</script>
             </body>

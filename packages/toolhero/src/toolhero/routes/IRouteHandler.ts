@@ -1,10 +1,13 @@
-
-import { HeroNextManager } from "../HeroNextHandler";
-import { HeroRequest } from "../HeroRequest"
-import { HeroResponse } from "../HeroResponse";
+import { HeroApplication } from '../HeroApplication';
+import { IHeroRequest } from '../IHeroRequest';
+import { IHeroResponse } from '../IHeroResponse';
 export interface IHeroRequestContext {
-  manager: HeroNextManager
+  application: HeroApplication;
 }
 export interface IRouteHandler {
-  (request: HeroRequest, response: HeroResponse, context: IHeroRequestContext): void;
+  (
+    request: IHeroRequest,
+    response: IHeroResponse,
+    context: IHeroRequestContext
+  ): void;
 }

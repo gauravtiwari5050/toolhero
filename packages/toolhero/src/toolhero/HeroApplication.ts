@@ -11,6 +11,9 @@ import {
   IHeroUser,
   EnumUserRole,
 } from './management/IHeroManager';
+import { ExpressHeroRequest } from './ExpressHeroRequest';
+import { ExpressHeroResponse } from './ExpressHeroResponse';
+import { RoutingService } from './routes/RoutingService';
 
 export type NextApiHandler = (
   req: NextApiRequest,
@@ -36,20 +39,17 @@ export class HeroApplication {
 
   public expressHandler(): ExpressRouter {
     const expressRouter = ExpressRouter();
-    expressRouter.get(
+    expressRouter.use(
       '/',
       async (request: ExpressRequest, response: ExpressResponse) => {
-        if (!request.query.tool) {
-          return response.status(404).json({
-            code: 'TOOL_NOT_PROVIDED',
-            message: 'Please provide a tool name',
-            status: 404,
-          });
-        }
-        const toolRenderService = new ToolRenderService(this.tools[0]);
-        // if none of the routes match, return a 404 response
-        const html = await toolRenderService.render();
-        response.status(200).setHeader('Content-Type', 'text/html').send(html);
+        const heroRequest = new ExpressHeroRequest(request);
+        const heroResponse = new ExpressHeroResponse(response);
+        const routingService = new RoutingService({
+          request: heroRequest,
+          response: heroResponse,
+          application: this,
+        });
+        await routingService.execute();
       }
     );
     return expressRouter;
