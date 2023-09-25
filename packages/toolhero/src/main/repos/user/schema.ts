@@ -13,4 +13,4 @@ schema.plugin(timestampsPlugin);
 
 schema.index({ specialities: 'text', languages: 'text' });
 
-export const UserModel = model<IUserSerialized>('User', schema);
+//export const UserModel = model<IUserSerialized>('User', schema);

@@ -1,9 +1,9 @@
-import { Result } from "../../core/Result";
-import { ObjectId } from "mongodb";
+import { Result } from '../../core/Result';
+import { ObjectId } from 'mongodb';
 
 export enum EnumError {
-  INSERTION_ERROR = "INSERTION_ERROR",
-  DOCUMENT_NOT_FOUND = "DOCUMENT_NOT_FOUND",
+  INSERTION_ERROR = 'INSERTION_ERROR',
+  DOCUMENT_NOT_FOUND = 'DOCUMENT_NOT_FOUND',
 }
 
 export type DocType<Type> = Type & { _id: ObjectId };
@@ -75,7 +75,7 @@ export type SearchOptions = {
 export type IFacet = {
   id: string;
   count: number;
-  type?: "selection" | "range";
+  type?: 'selection' | 'range';
 };
 
 export type AggregateFacets<AggregateSerialised> = {
@@ -99,7 +99,7 @@ export interface IRepo<Aggregate, AggregateSerialised> {
 
   findOne(
     uniqueFilter: FilterQuery<AggregateSerialised>
-  ): Promise<Result<Aggregate>>;
+  ): Promise<Result<Aggregate | null>>;
   /**
    * save or replace the document matching _id field.
    * !Important if there's an existing document then it will overwrite it with new object.

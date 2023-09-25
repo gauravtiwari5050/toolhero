@@ -1,6 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { Result } from '../core/Result';
 import { ErrorCodes } from '../domain/ErrorCodes';
+import { HeroApplication } from '../../toolhero/HeroApplication';
 
 export interface IJsonWebTokenPayload {
   userId: string;
@@ -17,15 +18,17 @@ export interface IJsonWebTokenService {
 }
 
 export class JsonWebTokenService implements IJsonWebTokenService {
-  private secret: string;
+  private application: HeroApplication;
 
-  constructor(secret: string) {
-    this.secret = secret;
+  constructor(application: HeroApplication) {
+    this.application = application;
   }
 
   async generate(payload: IJsonWebTokenPayload): Promise<Result<string>> {
     try {
-      const token = jwt.sign(payload, this.secret, { expiresIn: '1d' });
+      const token = jwt.sign(payload, this.application.getSecret(), {
+        expiresIn: '1d',
+      });
       return Result.ok(token);
     } catch (err) {
       return Result.fail({
@@ -37,7 +40,10 @@ export class JsonWebTokenService implements IJsonWebTokenService {
 
   async decode(token: string): Promise<Result<IJsonWebTokenPayload>> {
     try {
-      const payload = jwt.verify(token, this.secret) as IJsonWebTokenPayload;
+      const payload = jwt.verify(
+        token,
+        this.application.getSecret()
+      ) as IJsonWebTokenPayload;
       return Result.ok<IJsonWebTokenPayload>(payload);
     } catch (err: any) {
       return Result.fail<IJsonWebTokenPayload>({

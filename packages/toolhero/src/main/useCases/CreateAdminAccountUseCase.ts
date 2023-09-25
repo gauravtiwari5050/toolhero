@@ -50,14 +50,16 @@ export class CreateAdminAccountUseCase
           return Result.fail(superAdminGroupOrError.error);
         }
         superAdminGroup = superAdminGroupOrError.getValue();
-        const savedOrError = await this.repos.group.save(superAdminGroup);
+        const savedOrError = await this.repos.group.save(
+          superAdminGroup as Group
+        );
         if (savedOrError.isFailure) {
           return Result.fail(savedOrError.error);
         }
       }
 
       let userGroupOrError = await this.repos.userGroup.findOne({
-        groupId: superAdminGroup.uniqueEntityId.toString(),
+        groupId: (superAdminGroup as Group).uniqueEntityId.toString(),
       });
       if (userGroupOrError.isFailure) {
         return Result.fail(userGroupOrError.error);
@@ -94,15 +96,15 @@ export class CreateAdminAccountUseCase
           return Result.fail(userOrError.error);
         }
         user = userOrError.getValue();
-        const savedOrError = await this.repos.user.save(user);
+        const savedOrError = await this.repos.user.save(user as User);
         if (savedOrError.isFailure) {
           return Result.fail(savedOrError.error);
         }
       }
 
       userGroupOrError = UserGroup.create({
-        userId: user.uniqueEntityId.toString(),
-        groupId: superAdminGroup.uniqueEntityId.toString(),
+        userId: (user as User).uniqueEntityId.toString(),
+        groupId: (superAdminGroup as Group).uniqueEntityId.toString(),
       });
 
       if (userGroupOrError.isFailure) {
@@ -110,15 +112,17 @@ export class CreateAdminAccountUseCase
       }
 
       const userGroup = userGroupOrError.getValue();
-      const savedOrError = await this.repos.userGroup.save(userGroup);
+      const savedOrError = await this.repos.userGroup.save(
+        userGroup as UserGroup
+      );
       if (savedOrError.isFailure) {
         return Result.fail(savedOrError.error);
       }
 
       const tokenOrError = await this.services.jwt.generate({
-        userId: user.uniqueEntityId.toString(),
-        email: user.email,
-        groups: [superAdminGroup.uniqueEntityId.toString()],
+        userId: (user as User).uniqueEntityId.toString(),
+        email: (user as User).email,
+        groups: [(superAdminGroup as Group).uniqueEntityId.toString()],
       });
 
       if (tokenOrError.isFailure) {

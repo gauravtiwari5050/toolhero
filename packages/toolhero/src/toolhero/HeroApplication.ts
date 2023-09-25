@@ -1,20 +1,15 @@
 import {
-  Router as ExpressRouter,
   Request as ExpressRequest,
   Response as ExpressResponse,
+  Router as ExpressRouter,
 } from 'express';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ToolRenderService } from '../main/services/ToolRenderService';
+import MongoDb from '../database/MongoDb';
 import { HeroTool } from '../main/valueObjects/HeroTool';
-import {
-  IHeroManager,
-  IHeroUser,
-  EnumUserRole,
-} from './management/IHeroManager';
 import { ExpressHeroRequest } from './ExpressHeroRequest';
 import { ExpressHeroResponse } from './ExpressHeroResponse';
+import { IHeroManager } from './management/IHeroManager';
 import { RoutingService } from './routes/RoutingService';
-import MongoDb from '../database/MongoDb';
 
 export type NextApiHandler = (
   req: NextApiRequest,
@@ -22,17 +17,12 @@ export type NextApiHandler = (
 ) => Promise<void>;
 
 export class HeroApplication {
-  private key: string;
+  private secret: string;
   private tools: HeroTool[];
   private manager?: IHeroManager;
   private mongoUrl: string;
-  constructor(args: {
-    secret: string;
-    manager?: IHeroManager;
-    mongoUrl: string;
-  }) {
-    this.key = args.secret;
-    this.manager = args.manager;
+  constructor(args: { secret: string; mongoUrl: string }) {
+    this.secret = args.secret;
     this.tools = [];
     this.mongoUrl = args.mongoUrl;
   }
@@ -40,8 +30,22 @@ export class HeroApplication {
     this.tools.push(tool);
   }
 
+  public getSecret(): string {
+    return this.secret;
+  }
+
   public getTools(): HeroTool[] {
     return this.tools;
+  }
+
+  public async initialise(): Promise<void> {
+    const dbInstance = MongoDb.getInstance();
+    await dbInstance.connect(this.mongoUrl);
+  }
+
+  public getDatabaseConnection() {
+    const dbInstance = MongoDb.getInstance();
+    return dbInstance.connection;
   }
 
   public expressHandler(): ExpressRouter {
@@ -49,8 +53,7 @@ export class HeroApplication {
     expressRouter.use(
       '/',
       async (request: ExpressRequest, response: ExpressResponse) => {
-        const dbInstance = MongoDb.getInstance();
-        await dbInstance.connect(this.mongoUrl);
+        await this.initialise();
         const heroRequest = new ExpressHeroRequest(request);
         const heroResponse = new ExpressHeroResponse(response);
         const routingService = new RoutingService({

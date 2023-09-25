@@ -18,15 +18,8 @@ dotenv.config();
 const app = express();
 const port = 5050;
 
-export class CustomHeroManager implements IHeroManager {
-  async afterSignIn(args: { context: IHeroContext }): Promise<boolean> {
-    return true;
-  }
-}
-
 const heroApp = new HeroApplication({
   secret: "abracadabra",
-  manager: new CustomHeroManager(),
   mongoUrl: "mongodb://localhost:27017/toolhero",
 });
 const tool = HeroTool.New("My First Tool");

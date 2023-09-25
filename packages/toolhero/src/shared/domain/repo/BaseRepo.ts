@@ -15,10 +15,15 @@ import {
 } from './IRepo';
 import { ErrorCodes } from '../ErrorCodes';
 import _ from 'lodash';
+import { HeroApplication } from '../../../toolhero/HeroApplication';
 
 export abstract class BaseRepo<Aggregate, AggregateSerialized>
   implements IRepo<Aggregate, AggregateSerialized>
 {
+  private application: HeroApplication;
+  constructor(application: HeroApplication) {
+    this.application = application;
+  }
   protected abstract get repo(): Model<AggregateSerialized>;
 
   protected abstract fromDomain(
@@ -189,17 +194,11 @@ export abstract class BaseRepo<Aggregate, AggregateSerialized>
 
   async findOne(
     uniqueFilter: FilterQuery<AggregateSerialized>
-  ): Promise<Result<Aggregate>> {
+  ): Promise<Result<Aggregate | null>> {
     try {
       const doc = await this.repo.findOne(uniqueFilter).exec();
       if (!doc) {
-        return Result.fail({
-          code: EnumError.DOCUMENT_NOT_FOUND,
-          message: 'Document not found',
-          meta: {
-            doc: uniqueFilter,
-          },
-        });
+        return Result.ok(null);
       }
 
       // @ts-ignore

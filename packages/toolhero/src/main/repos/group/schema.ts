@@ -9,5 +9,3 @@ export const schema = new Schema<IGroupSerialized>({
 schema.plugin(timestampsPlugin);
 
 schema.index({ specialities: 'text', languages: 'text' });
-
-export const GroupModel = model<IGroupSerialized>('Group', schema);

@@ -10,5 +10,3 @@ export const schema = new Schema<IUserGroupSerialized>({
 schema.plugin(timestampsPlugin);
 
 schema.index({ specialities: 'text', languages: 'text' });
-
-export const UserGroupModel = model<IUserGroupSerialized>('UserGroup', schema);
