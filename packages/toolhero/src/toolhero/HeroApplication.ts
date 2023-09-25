@@ -14,6 +14,7 @@ import {
 import { ExpressHeroRequest } from './ExpressHeroRequest';
 import { ExpressHeroResponse } from './ExpressHeroResponse';
 import { RoutingService } from './routes/RoutingService';
+import MongoDb from '../database/MongoDb';
 
 export type NextApiHandler = (
   req: NextApiRequest,
@@ -24,10 +25,16 @@ export class HeroApplication {
   private key: string;
   private tools: HeroTool[];
   private manager?: IHeroManager;
-  constructor(args: { secret: string; manager?: IHeroManager }) {
+  private mongoUrl: string;
+  constructor(args: {
+    secret: string;
+    manager?: IHeroManager;
+    mongoUrl: string;
+  }) {
     this.key = args.secret;
     this.manager = args.manager;
     this.tools = [];
+    this.mongoUrl = args.mongoUrl;
   }
   public add(tool: HeroTool): void {
     this.tools.push(tool);
@@ -42,6 +49,8 @@ export class HeroApplication {
     expressRouter.use(
       '/',
       async (request: ExpressRequest, response: ExpressResponse) => {
+        const dbInstance = MongoDb.getInstance();
+        await dbInstance.connect(this.mongoUrl);
         const heroRequest = new ExpressHeroRequest(request);
         const heroResponse = new ExpressHeroResponse(response);
         const routingService = new RoutingService({

@@ -1,9 +1,8 @@
-
-
 export interface ResultError {
   code: string;
   message: string;
   error?: any;
+  meta?: Record<string, any>;
 }
 export class Result<T> {
   public isSuccess: boolean;
@@ -14,12 +13,12 @@ export class Result<T> {
   public constructor(isSuccess: boolean, error?: ResultError, value?: T) {
     if (isSuccess && error) {
       throw new Error(
-        "InvalidOperation: A result cannot be successful and contain an error"
+        'InvalidOperation: A result cannot be successful and contain an error'
       );
     }
     if (!isSuccess && !error) {
       throw new Error(
-        "InvalidOperation: A failing result needs to contain an error message"
+        'InvalidOperation: A failing result needs to contain an error message'
       );
     }
 

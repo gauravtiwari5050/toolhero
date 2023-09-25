@@ -27,6 +27,7 @@ export class CustomHeroManager implements IHeroManager {
 const heroApp = new HeroApplication({
   secret: "abracadabra",
   manager: new CustomHeroManager(),
+  mongoUrl: "mongodb://localhost:27017/toolhero",
 });
 const tool = HeroTool.New("My First Tool");
 heroApp.add(tool);

@@ -43,12 +43,17 @@
     }
   ],
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.4",
+    "@types/jsonwebtoken": "^9.0.3",
     "@types/lodash.clonedeep": "^4.5.7",
     "@types/route-parser": "^0.1.4",
     "next": "^13.4.4"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
     "lodash.clonedeep": "^4.5.0",
+    "mongoose": "^7.5.2",
     "route-parser": "^0.0.5"
   }
 }
